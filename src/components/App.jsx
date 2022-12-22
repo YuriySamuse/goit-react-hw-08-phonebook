@@ -1,4 +1,5 @@
 import React from 'react';
+import { nanoid } from 'nanoid';
 import Form from 'components/Form/Form';
 import ContactList from 'components/ContactsList/ContactsList';
 
@@ -14,8 +15,13 @@ class App extends React.Component {
     ],
   };
 
-  formSubmitHandler = data => {
-    console.log(data);
+  formSubmitHandler = ({ name, number }) => {
+    console.log({ name, number });
+    const newContact = { ...{ name, number }, id: nanoid() };
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, { newContact }],
+    }));
+    console.log(this.state.contacts);
   };
 
   render() {
