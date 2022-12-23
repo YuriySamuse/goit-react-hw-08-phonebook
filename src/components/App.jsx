@@ -4,6 +4,8 @@ import Form from 'components/Form/Form';
 import ContactList from 'components/ContactsList/ContactsList';
 import Filter from 'components/Filter/Filter';
 
+import { Title, Wrapper } from 'components/App.styled';
+
 // import { render } from '@testing-library/react';
 
 class App extends React.Component {
@@ -61,16 +63,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <>
-        <h1 title="Phonebook">Phonebook</h1>
+      <Wrapper>
+        <Title title="Phonebook">Phonebook</Title>
         <Form onSubmit={this.formSubmitHandler} />
-        <h2 title="Contacts">Contacts</h2>
+        <Title title="Contacts">Contacts</Title>
         <Filter filter={this.state.filter} onChange={this.changeFilter} />
         <ContactList
           contacts={this.showContacts()}
           onDelete={this.deleteItem}
         />
-      </>
+      </Wrapper>
     );
   }
 }
