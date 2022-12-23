@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ContactItem = ({ name, number }) => (
+const ContactItem = ({ id, name, number, onDelete }) => (
   <>
     <p>
       {name}: {number}
     </p>
+    <button onClick={() => onDelete(id)}>Delete</button>
   </>
 );
 
