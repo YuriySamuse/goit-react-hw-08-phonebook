@@ -17,13 +17,28 @@ class App extends React.Component {
     filter: '',
   };
 
+  // formSubmitHandler = ({ name, number }) => {
+  //   // console.log({ name, number });
+  //   const newContact = { ...{ name, number }, id: nanoid() };
+  //   this.setState(prevState => ({
+  //     contacts: [...prevState.contacts, newContact],
+  //   }));
+  //   // console.log(this.state.contacts);
+  // };
+
   formSubmitHandler = ({ name, number }) => {
-    // console.log({ name, number });
+    const verifyContact = this.state.contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
     const newContact = { ...{ name, number }, id: nanoid() };
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
-    // console.log(this.state.contacts);
+    if (!verifyContact) {
+      this.setState(prevState => ({
+        contacts: [...prevState.contacts, newContact],
+      }));
+    } else {
+      return alert(` Kонтакт ${name} вже існує!`);
+    }
   };
 
   changeFilter = event => {
