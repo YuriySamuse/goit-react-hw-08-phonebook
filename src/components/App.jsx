@@ -6,8 +6,6 @@ import Filter from 'components/Filter/Filter';
 
 import { Title, Wrapper } from 'components/App.styled';
 
-// import { render } from '@testing-library/react';
-
 class App extends React.Component {
   state = {
     contacts: [
@@ -19,24 +17,17 @@ class App extends React.Component {
     filter: '',
   };
 
-  // formSubmitHandler = ({ name, number }) => {
-  //   // console.log({ name, number });
-  //   const newContact = { ...{ name, number }, id: nanoid() };
-  //   this.setState(prevState => ({
-  //     contacts: [...prevState.contacts, newContact],
-  //   }));
-  //   // console.log(this.state.contacts);
-  // };
-
   formSubmitHandler = ({ name, number }) => {
     const verifyContact = this.state.contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
 
-    const newContact = { ...{ name, number }, id: nanoid() };
     if (!verifyContact) {
       this.setState(prevState => ({
-        contacts: [...prevState.contacts, newContact],
+        contacts: [
+          ...prevState.contacts,
+          { ...{ name, number }, id: nanoid() },
+        ],
       }));
     } else {
       return alert(` Kонтакт ${name} вже існує!`);
@@ -45,7 +36,6 @@ class App extends React.Component {
 
   changeFilter = event => {
     this.setState({ filter: event.currentTarget.value });
-    // console.log(this.state.filter);
   };
 
   showContacts = () => {
@@ -60,6 +50,21 @@ class App extends React.Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
+    }
+  }
 
   render() {
     return (
