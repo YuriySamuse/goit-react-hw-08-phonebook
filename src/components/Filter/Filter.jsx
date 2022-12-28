@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import { Input, Label } from 'components/Filter/Filter.styled';
 
-const Filter = ({ filter, onChange }) => (
+const Filter = ({ value, onChange }) => (
   <Label>
     Find contacts by name
-    <Input type="name" value={filter} onChange={onChange}></Input>
+    <Input type="name" value={value} onChange={onChange}></Input>
   </Label>
 );
 

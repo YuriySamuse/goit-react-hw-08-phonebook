@@ -1,6 +1,6 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
-import Form from 'components/Form/Form';
+import ContactForm from 'components/Form/Form';
 import ContactList from 'components/ContactsList/ContactsList';
 import Filter from 'components/Filter/Filter';
 
@@ -17,20 +17,20 @@ class App extends React.Component {
     filter: '',
   };
 
-  formSubmitHandler = ({ name, number }) => {
+  formSubmitHandler = value => {
     const verifyContact = this.state.contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
+      contact => contact.name.toLowerCase() === value.name.toLowerCase()
     );
 
     if (!verifyContact) {
       this.setState(prevState => ({
         contacts: [
           ...prevState.contacts,
-          { ...{ name, number }, id: nanoid() },
+          { name: value.name, number: value.number, id: nanoid() },
         ],
       }));
     } else {
-      return alert(` Kонтакт ${name} вже існує!`);
+      return alert(` Kонтакт ${value.name} вже існує!`);
     }
   };
 
@@ -59,7 +59,7 @@ class App extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_, prevState) {
     const { contacts } = this.state;
     if (contacts !== prevState.contacts) {
       localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -70,9 +70,9 @@ class App extends React.Component {
     return (
       <Wrapper>
         <Title title="Phonebook">Phonebook</Title>
-        <Form onSubmit={this.formSubmitHandler} />
+        <ContactForm onSubmit={this.formSubmitHandler} />
         <Title title="Contacts">Contacts</Title>
-        <Filter filter={this.state.filter} onChange={this.changeFilter} />
+        <Filter value={this.state.filter} onChange={this.changeFilter} />
         <ContactList
           contacts={this.showContacts()}
           onDelete={this.deleteItem}
