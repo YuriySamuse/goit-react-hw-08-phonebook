@@ -31,7 +31,7 @@ const initialValues = {
 
 const ContactForm = ({ onSubmit }) => {
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values);
+    // console.log(values);
     onSubmit(values);
     resetForm();
   };
@@ -69,7 +69,7 @@ const ContactForm = ({ onSubmit }) => {
 };
 
 ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;

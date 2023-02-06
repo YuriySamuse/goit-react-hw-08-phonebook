@@ -22,15 +22,15 @@ class App extends React.Component {
       contact => contact.name.toLowerCase() === value.name.toLowerCase()
     );
 
-    if (!verifyContact) {
+    if (verifyContact) {
+      return alert(` Kонтакт ${value.name} вже існує!`);
+    } else {
       this.setState(prevState => ({
         contacts: [
           ...prevState.contacts,
           { name: value.name, number: value.number, id: nanoid() },
         ],
       }));
-    } else {
-      return alert(` Kонтакт ${value.name} вже існує!`);
     }
   };
 
