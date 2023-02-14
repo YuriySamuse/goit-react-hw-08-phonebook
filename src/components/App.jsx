@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import ContactForm from 'components/Form/Form';
 import ContactList from 'components/ContactsList/ContactsList';
@@ -6,6 +6,61 @@ import Filter from 'components/Filter/Filter';
 
 import { Title, Wrapper } from 'components/App.styled';
 
+const App = () => {
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem('contacts')) ?? [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ]
+  );
+  const [filter, setFilter] = useState('');
+
+  const formSubmitHandler = ({ name, number }) => {
+    const verifyContact = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (verifyContact) {
+      return alert(` Kонтакт ${name} вже існує!`);
+    } else {
+      return setContacts([...contacts, { name, number, id: nanoid() }]);
+    }
+  };
+
+  const changeFilter = event => {
+    setFilter(event.currentTarget.value);
+  };
+
+  const showContacts = () => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
+  const deleteItem = id => {
+    setContacts(contacts.filter(contact => contact.id !== id));
+  };
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  return (
+    <Wrapper>
+      <Title title="Phonebook">Phonebook</Title>
+      <ContactForm onSubmit={formSubmitHandler} />
+      <Title title="Contacts">Contacts</Title>
+      <Filter value={filter} onChange={changeFilter} />
+      <ContactList contacts={showContacts()} onDelete={deleteItem} />
+    </Wrapper>
+  );
+};
+
+export default App;
+
+/*
 class App extends React.Component {
   state = {
     contacts: [
@@ -81,5 +136,4 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;
+*/
