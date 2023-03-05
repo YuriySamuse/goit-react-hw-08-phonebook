@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { Form, Field, ErrorMessage } from 'formik';
 
-export const SearchForm = styled(Form)`
+export const SearchForm = styled.form`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,20 +14,13 @@ export const Label = styled.label`
   margin-right: 15px;
 `;
 
-export const Input = styled(Field)`
+export const Input = styled.input`
   padding: 0.5em;
   margin: 0.5em;
   color: palevioletred;
   background: papayawhip;
   border: solid black 1px;
   border-radius: 3px;
-`;
-
-export const Error = styled(ErrorMessage)`
-  margin-bottom: 30px;
-  color: tomato;
-  font-size: 16px;
-  text-align: center;
 `;
 
 export const Button = styled.button`

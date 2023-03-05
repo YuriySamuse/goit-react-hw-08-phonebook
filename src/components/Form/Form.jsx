@@ -1,75 +1,78 @@
 import React from 'react';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from 'nanoid';
+import toast, { Toaster } from 'react-hot-toast';
+import { addContact } from 'redux/contactsSlice';
 
-import {
-  SearchForm,
-  Label,
-  Input,
-  Button,
-  Error,
-} from 'components/Form/Form.styled';
+import { SearchForm, Label, Input, Button } from 'components/Form/Form.styled';
 
-const phoneRegExp =
-  /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
-const nameRegExp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
+const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-const schema = yup.object().shape({
-  name: yup.string().matches(nameRegExp, 'Name is not valid').required(),
-  number: yup
-    .string()
-    .matches(phoneRegExp, 'Phone number is not valid')
-    .max(12)
-    .required(),
-});
+  const contacts = useSelector(state => state.contacts.items);
+  const dispatch = useDispatch();
 
-const initialValues = {
-  name: '',
-  number: '',
-};
+  const handleChange = e => {
+    const { name, value } = e.target;
+    switch (name) {
+      case 'name':
+        return setName(value);
+      case 'number':
+        return setNumber(value);
+      default:
+        throw new Error('Unexpected type of field');
+    }
+  };
 
-const ContactForm = ({ onSubmit }) => {
-  const handleSubmit = (values, { resetForm }) => {
-    // console.log(values);
-    onSubmit(values);
-    resetForm();
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (contacts.find(contact => contact.name === name)) {
+      return toast.error(`${name} is already in contacts.`);
+    } else {
+      dispatch(
+        addContact({
+          id: nanoid(),
+          name: name,
+          number: number,
+        })
+      );
+      resetForm();
+    }
+  };
+
+  const resetForm = () => {
+    setName('');
+    setNumber('');
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={schema}
-    >
-      <SearchForm autocomplette="off">
-        <Label htmlFor="name">
-          Name:
-          <Input
-            type="text"
-            name="name"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          />
-          <Error name="name" component="div" />
-        </Label>
-        <Label htmlFor="number">
-          Number:
-          <Input
-            type="tel"
-            name="number"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          />
-          <Error name="number" component="div" />
-        </Label>
+    <SearchForm onSubmit={handleSubmit}>
+      <Label htmlFor="name">
+        Name:
+        <Input
+          type="text"
+          name="name"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          onChange={handleChange}
+        />
+      </Label>
+      <Label htmlFor="number">
+        Number:
+        <Input
+          type="tel"
+          name="number"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          onChange={handleChange}
+        />
+      </Label>
 
-        <Button type="submit">Add contact</Button>
-      </SearchForm>
-    </Formik>
+      <Button type="submit">Add contact</Button>
+      <Toaster />
+    </SearchForm>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;
