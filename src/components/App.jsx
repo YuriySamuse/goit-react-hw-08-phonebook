@@ -1,7 +1,7 @@
 import ContactForm from 'components/Form/Form';
 import ContactList from 'components/ContactsList/ContactsList';
 import Filter from 'components/Filter/Filter';
-
+import { Loader } from './Loader/Loader';
 import { Title, Wrapper } from 'components/App.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectError, selectIsLoading } from 'redux/selectors';
@@ -23,7 +23,7 @@ const App = () => {
       <ContactForm />
       <Title title="Contacts">Contacts</Title>
       <Filter />
-      {isLoading && !error && <p>...Loading</p>}
+      {isLoading && !error && <Loader />}
       {error && <p>{error}</p>}
       {!isLoading && <ContactList />}
     </Wrapper>
