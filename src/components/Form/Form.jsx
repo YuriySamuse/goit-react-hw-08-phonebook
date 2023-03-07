@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 import toast, { Toaster } from 'react-hot-toast';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 import { SearchForm, Label, Input, Button } from 'components/Form/Form.styled';
 
@@ -11,7 +12,7 @@ const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const contacts = useSelector(state => state.contacts.items);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleChange = e => {
