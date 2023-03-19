@@ -1,15 +1,33 @@
+import { useDispatch } from 'react-redux';
+import { logIn } from 'redux/auth/operation';
+// import { FormStyled, FormLabel, FormInput, Button } from "./Login.styled";
+
 const Login = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    dispatch(
+      logIn({
+        email: form.elements.email.value,
+        password: form.elements.password.value,
+      })
+    );
+    form.reset();
+  };
+
   return (
-    <form autoComplete="off">
-      <label>
+    <form onSubmit={handleSubmit} autoComplete="off">
+      <span>
         Email
         <input type="email" name="email" />
-      </label>
-      <label>
+      </span>
+      <span>
         Password
         <input type="password" name="password" />
-      </label>
-      <button type="submit">LogIn</button>
+      </span>
+      <button type="submit">Log In</button>
     </form>
   );
 };

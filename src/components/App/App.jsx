@@ -1,32 +1,59 @@
-import ContactForm from 'components/Form/Form';
-import ContactList from 'components/ContactsList/ContactsList';
-import Filter from 'components/Filter/Filter';
-import { Loader } from '../Loader/Loader';
-import { Title, Wrapper } from 'components/App/App.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectError, selectIsLoading } from 'redux/contacts/selectors';
-import { useEffect } from 'react';
-import { fetchContacts } from 'redux/contacts/operations';
+import { useEffect, lazy } from 'react';
+import { useDispatch } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
+import { refreshUser } from 'redux/auth/operation';
+
+import Layout from 'components/Layout/Layout';
+import { PrivateRoute } from 'components/PrivateRoute';
+import { RestrictedRoute } from 'components/RestrictedRoute';
+import { useAuth } from 'hooks';
+// import { Loader } from 'components/Loader/Loader';
+
+const HomePage = lazy(() => import('pages/Home/Home'));
+const RegisterPage = lazy(() => import('pages/Register/Register'));
+const LoginPage = lazy(() => import('pages/Login/Login'));
+const ContactsPage = lazy(() => import('pages/Contacts/Contacts'));
 
 const App = () => {
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
   const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
   return (
-    <Wrapper>
-      <Title title="Phonebook">Phonebook</Title>
-      <ContactForm />
-      <Title title="Contacts">Contacts</Title>
-      <Filter />
-      {isLoading && !error && <Loader />}
-      {error && <p>{error}</p>}
-      {!isLoading && <ContactList />}
-    </Wrapper>
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute
+                redirectTo="/contacts"
+                component={<RegisterPage />}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute
+                redirectTo="/contacts"
+                component={<LoginPage />}
+              />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+            }
+          />
+        </Route>
+      </Routes>
+    </>
   );
 };
 
