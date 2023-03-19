@@ -1,12 +1,16 @@
-import { HomeContainer, HomeTitle } from './Home.styled';
+import { Hero, HomeTitle, Description } from './Home.styled.js';
 
 const Home = () => {
   return (
-    <HomeContainer>
+    <Hero>
       <HomeTitle>Phonebook</HomeTitle>
-      <p> New App for you</p>
-      <p>Login to you acount</p>
-    </HomeContainer>
+      <Description>
+        App for you
+        <span role="img" aria-label="Greeting icon">
+          💁‍♀️
+        </span>
+      </Description>
+    </Hero>
   );
 };
 

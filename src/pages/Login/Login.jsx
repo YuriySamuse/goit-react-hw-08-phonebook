@@ -1,7 +1,8 @@
 import { useDispatch } from 'react-redux';
 import { logIn } from 'redux/auth/operation';
 import * as React from 'react';
-import Button from '@mui/material/Button'; // import { FormStyled, FormLabel, FormInput, Button } from "./Login.styled";
+// import Button from '@mui/material/Button';
+import { LabelStyled, FormStyled, Button } from './Login.styled.js';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -19,17 +20,17 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
-      <span>
+    <FormStyled onSubmit={handleSubmit} autoComplete="off">
+      <LabelStyled>
         Email
         <input type="email" name="email" />
-      </span>
-      <span>
+      </LabelStyled>
+      <LabelStyled>
         Password
         <input type="password" name="password" />
-      </span>
+      </LabelStyled>
       <Button type="submit">Log In</Button>
-    </form>
+    </FormStyled>
   );
 };
 
