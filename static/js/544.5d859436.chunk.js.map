@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/544.5d859436.chunk.js","mappings":"iKAUA,UAVa,WACX,OACE,4BACE,uCACA,6CACA,iDAGL,C","sources":["pages/Home/Home.jsx"],"sourcesContent":["const Home = () => {\n  return (\n    <div>\n      <h1>Phonebook</h1>\n      <p> New App for you</p>\n      <p>Login to you acount</p>\n    </div>\n  );\n};\n\nexport default Home;\n"],"names":[],"sourceRoot":""}
