@@ -6,7 +6,7 @@ import { refreshUser } from 'redux/auth/operation';
 import Layout from 'components/Layout/Layout';
 import { PrivateRoute } from 'components/PrivateRoute';
 import { RestrictedRoute } from 'components/RestrictedRoute';
-import { useAuth } from 'hooks';
+// import { useAuth } from 'hooks';
 // import { Loader } from 'components/Loader/Loader';
 
 const HomePage = lazy(() => import('pages/Home/Home'));
@@ -16,7 +16,7 @@ const ContactsPage = lazy(() => import('pages/Contacts/Contacts'));
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isRefreshing } = useAuth();
+  // const { isRefreshing } = useAuth();
 
   useEffect(() => {
     dispatch(refreshUser());

@@ -8,8 +8,9 @@ const Filter = () => {
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
-  const changeFilter = e => dispatch(setFilter(e.target.value));
-
+  const changeFilter = e => {
+    dispatch(setFilter(e.target.value));
+  };
   return (
     <Label>
       Find contacts by name
